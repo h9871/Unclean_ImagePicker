@@ -46,17 +46,17 @@ extension BaseViewController {
     }
     
     /// 앨범 권한 체크 실행
-    func albumPermission() async {
+    func albumPermission(_ complete: @escaping (() -> Void))  {
         switch PHPhotoLibrary.authorizationStatus() {
         case .authorized:   // 허용
-            return
+            complete()
         case .notDetermined:    // 아직 진행 안함
             PHPhotoLibrary.requestAuthorization { status in
                 if status == .authorized {
-                    return
+                    complete()
                 } else {
-                    Task {
-                        await self.permissionErrorAlert()
+                    DispatchQueue.main.async {
+                        self.permissionErrorAlert()
                     }
                 }
             }
@@ -65,8 +65,8 @@ extension BaseViewController {
         case .denied:   // 거부
             fallthrough
         case .limited:  // 한계??
-            Task {
-                await self.permissionErrorAlert()
+            DispatchQueue.main.async {
+                self.permissionErrorAlert()
             }
         @unknown default:
             fatalError()
@@ -74,7 +74,7 @@ extension BaseViewController {
     }
     
     /// 권한 관련 얼럿 띄우기 (다신 보지 않기 추가)
-    func permissionErrorAlert() async {
+    func permissionErrorAlert() {
         let alert = UIAlertController(title: "접근 권한 설정",
                                       message: "앨범 권한이 제한되어 있습다.",
                                       preferredStyle: .alert)
@@ -82,7 +82,9 @@ extension BaseViewController {
         // 설정으로 이동 액션
         let settingAction = UIAlertAction(title: "설정으로 이동하기", style: .default) { _ in
             if let appSetting = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(appSetting, options: [:], completionHandler: nil)
+                UIApplication.shared.open(appSetting, options: [:]) { _ in 
+                    self.dismiss(animated: true, completion: nil)
+                }
             }
         }
         alert.addAction(settingAction)

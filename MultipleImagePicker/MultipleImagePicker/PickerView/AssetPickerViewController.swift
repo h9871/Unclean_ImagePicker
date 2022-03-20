@@ -100,17 +100,7 @@ class AssetPickerViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       // TODO 여기를 어떤식으로 처리할 지
-        PHPhotoLibrary.requestAuthorization { status in
-            if status == .authorized {
-                DispatchQueue.main.async {
-                    self.initView()
-                }
-            } else {
-            
-            }
-        }
+        self.initView()
     }
 }
 
@@ -133,7 +123,9 @@ extension AssetPickerViewController {
         self.initCollectionView()
         
         // 뷰 로드 처리
-        self.initLoadView()
+        self.albumPermission {
+            self.initLoadView()
+        }
     }
 
     /// 뷰 레이아웃 설정
