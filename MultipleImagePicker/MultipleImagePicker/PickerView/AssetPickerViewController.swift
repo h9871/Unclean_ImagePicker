@@ -183,13 +183,13 @@ extension AssetPickerViewController {
     /// 확인 버튼 클릭 시
     /// - Parameter sender: 확인 버튼
     @IBAction func didTappedConfirmBtn(_ sender: UIButton) {
-        
+        print("확인 버튼 클릭")
     }
     
     /// 앨범리스트 버튼 클릭 시
     /// - Parameter sender: 리스트 버튼
     @IBAction func didTappedAlbumListBtn(_ sender: UIButton) {
-        
+        print("앨범 리스트 버튼 클릭")
     }
 }
 
