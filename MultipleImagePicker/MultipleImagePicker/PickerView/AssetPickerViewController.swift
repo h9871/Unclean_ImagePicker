@@ -100,7 +100,17 @@ class AssetPickerViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.initView()
+        
+       // TODO 여기를 어떤식으로 처리할 지
+        PHPhotoLibrary.requestAuthorization { status in
+            if status == .authorized {
+                DispatchQueue.main.async {
+                    self.initView()
+                }
+            } else {
+            
+            }
+        }
     }
 }
 
