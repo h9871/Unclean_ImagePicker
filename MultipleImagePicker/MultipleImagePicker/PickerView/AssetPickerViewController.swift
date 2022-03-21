@@ -61,6 +61,8 @@ class AssetPickerViewController: BaseViewController {
     @IBOutlet weak var albumListBtn: UIButton!
     /// 확인 버튼
     @IBOutlet weak var confirmBtn: UIButton!
+    /// 선택 리스트 카운트 라벨
+    @IBOutlet weak var selectCountLabel: UILabel!
     
     /// 메인 스택 뷰
     private lazy var mainStackView: UIStackView = {
@@ -94,7 +96,12 @@ class AssetPickerViewController: BaseViewController {
     /// 미디어 파일 배열
     private lazy var phAssets: Array<PHAsset> = []
     /// 선택 리스트
-    private lazy var selectList: Array<SelectedPickerItem> = []
+    private lazy var selectList: Array<SelectedPickerItem> = [] {
+        didSet {
+            self.selectCountLabel.isHidden = (self.selectList.count < 1)
+            self.selectCountLabel.text = "\(self.selectList.count)"
+        }
+    }
     /// 이미지 매니저
     private let manager = PHImageManager.default()
 

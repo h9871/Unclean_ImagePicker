@@ -14,6 +14,7 @@
                 <outlet property="backBtn" destination="LQH-NR-cQA" id="6Pw-9Y-mf1"/>
                 <outlet property="confirmBtn" destination="5xd-aE-FTW" id="aLK-Zr-zaU"/>
                 <outlet property="naviView" destination="XSK-3m-M6N" id="ufo-Td-MbI"/>
+                <outlet property="selectCountLabel" destination="C6t-4S-Dgv" id="dn0-b1-tz2"/>
                 <outlet property="view" destination="iN0-l3-epB" id="p3Y-Ki-5vi"/>
             </connections>
         </placeholder>
@@ -57,8 +58,8 @@
                                 <action selector="didTappedConfirmBtn:" destination="-1" eventType="touchUpInside" id="t2W-Nj-E5j"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C6t-4S-Dgv">
-                            <rect key="frame" x="360" y="19.5" width="8" height="21"/>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C6t-4S-Dgv">
+                            <rect key="frame" x="357.5" y="19.5" width="10.5" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
