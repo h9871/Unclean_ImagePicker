@@ -82,6 +82,9 @@ class AssetPickerViewController: BaseViewController {
         return UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     }()
     
+    /// 리스트 시트 뷰
+    private lazy var albumSheetVC = SelectAlbumViewController.instance()
+    
     // MARK: - 데이터 소스
     /// 섹션
     enum Section: CaseIterable {
@@ -113,7 +116,6 @@ class AssetPickerViewController: BaseViewController {
 
 // MARK: - ㄴ 뷰 셋팅
 extension AssetPickerViewController {
-    
     /// 뷰 생성
     private func initView() {
         // 메인 스택 뷰 넣기
@@ -196,7 +198,7 @@ extension AssetPickerViewController {
     /// 앨범리스트 버튼 클릭 시
     /// - Parameter sender: 리스트 버튼
     @IBAction func didTappedAlbumListBtn(_ sender: UIButton) {
-        print("앨범 리스트 버튼 클릭")
+        self.addBottomSheetView()
     }
 }
 
@@ -279,6 +281,20 @@ extension AssetPickerViewController: AssetPickerSelectListViewDelegate {
         UIView.animate(withDuration: 0.2) {
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+// MARK: - ㄴ 앨범 리스트 뷰 관련
+extension AssetPickerViewController {
+    /// 시트 뷰 추가
+    private func addBottomSheetView() {
+        self.addChild(self.albumSheetVC)
+        self.view.addSubview(self.albumSheetVC.view)
+        self.albumSheetVC.didMove(toParent: self)
+        
+        let height = self.view.frame.height
+        let width  = self.view.frame.width
+        self.albumSheetVC.view.frame = CGRect(x: 0, y: self.view.frame.maxY, width: width, height: height)
     }
 }
 
