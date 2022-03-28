@@ -135,7 +135,7 @@ extension AssetPickerCollectionViewCell {
         case .audio: fallthrough
         default:
             DispatchQueue.global().async {
-                self.manager.requestImage(for: asset, targetSize: thumbSize, contentMode: .aspectFill, options: nil) { image, info in
+                self.manager.requestImage(for: asset, targetSize: thumbSize, contentMode: .aspectFit, options: nil) { image, info in
                     DispatchQueue.main.async {
                         self.thumbImageView.image = image
                     }
