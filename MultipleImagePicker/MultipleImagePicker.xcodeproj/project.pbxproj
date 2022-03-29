@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D18B17927F2F3F80005B6EE /* AssetPickerAlbumListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18B17827F2F3F80005B6EE /* AssetPickerAlbumListView.swift */; };
+		5D18B17C27F2F74A0005B6EE /* Photos+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18B17B27F2F74A0005B6EE /* Photos+Extensions.swift */; };
 		5D27E3A927E1BC8100DE2ABA /* AssetSelectedThumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */; };
 		5D3EDA4727E856D3006C8019 /* SelectAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3EDA4627E856D3006C8019 /* SelectAlbumViewController.swift */; };
 		5D60D93727E948FF000D6914 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D60D93627E948FF000D6914 /* Utils.swift */; };
@@ -26,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5D18B17827F2F3F80005B6EE /* AssetPickerAlbumListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerAlbumListView.swift; sourceTree = "<group>"; };
+		5D18B17B27F2F74A0005B6EE /* Photos+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photos+Extensions.swift"; sourceTree = "<group>"; };
 		5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelectedThumbView.swift; sourceTree = "<group>"; };
 		5D3EDA4627E856D3006C8019 /* SelectAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAlbumViewController.swift; sourceTree = "<group>"; };
 		5D60D93627E948FF000D6914 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -57,6 +61,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5D18B17A27F2F7240005B6EE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5D18B17B27F2F74A0005B6EE /* Photos+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		5D3EDA4527E856BB006C8019 /* SelectAlbumView */ = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				5D874A6D27DB2C8D0026ABB2 /* Base */,
+				5D18B17A27F2F7240005B6EE /* Extensions */,
 				5D874A5A27DB170D0026ABB2 /* ProjectMain */,
 				5D874A5927DB170A0026ABB2 /* ProjectUtil */,
 				5D874A5B27DB18760026ABB2 /* PickerView */,
@@ -138,6 +151,7 @@
 			children = (
 				5D874A6A27DB26F80026ABB2 /* Cell */,
 				5D874A6327DB205B0026ABB2 /* AssetPickerSelectListView.swift */,
+				5D18B17827F2F3F80005B6EE /* AssetPickerAlbumListView.swift */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -241,6 +255,7 @@
 				5D833D3227EB137B00CFFC68 /* SelectAlbumTableViewCell.swift in Sources */,
 				5D874A4A27DB17010026ABB2 /* ViewController.swift in Sources */,
 				5D874A6427DB205B0026ABB2 /* AssetPickerSelectListView.swift in Sources */,
+				5D18B17927F2F3F80005B6EE /* AssetPickerAlbumListView.swift in Sources */,
 				5D874A4627DB17010026ABB2 /* AppDelegate.swift in Sources */,
 				5D27E3A927E1BC8100DE2ABA /* AssetSelectedThumbView.swift in Sources */,
 				5D874A4827DB17010026ABB2 /* SceneDelegate.swift in Sources */,
@@ -249,6 +264,7 @@
 				5D3EDA4727E856D3006C8019 /* SelectAlbumViewController.swift in Sources */,
 				5D874A6F27DB2CB70026ABB2 /* BaseViewController.swift in Sources */,
 				5D874A6C27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift in Sources */,
+				5D18B17C27F2F74A0005B6EE /* Photos+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
