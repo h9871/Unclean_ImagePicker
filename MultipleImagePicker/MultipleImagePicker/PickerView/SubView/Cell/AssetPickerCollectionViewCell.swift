@@ -15,6 +15,8 @@ class AssetPickerCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.layer.borderColor = UIColor(red: 77/255, green: 124/255, blue: 254/255, alpha: 1.0).cgColor
         imageView.layer.borderWidth = 0
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -42,6 +44,13 @@ class AssetPickerCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .center
         label.backgroundColor = UIColor(red: 77/255, green: 124/255, blue: 254/255, alpha: 1.0)
         return label
+    }()
+    
+    /// 프로그레스
+    private lazy var indicatorView: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.stopAnimating()
+        return indicator
     }()
     
     /// 이미지 매니저
@@ -76,6 +85,7 @@ class AssetPickerCollectionViewCell: UICollectionViewCell {
     private func initView() {
         self.contentView.addSubview(self.thumbImageView)
         self.contentView.addSubview(self.selectView)
+        self.contentView.addSubview(self.indicatorView)
         
         // 선택 뷰 내용
         self.selectView.addSubview(self.checkNumImageView)
@@ -110,6 +120,11 @@ class AssetPickerCollectionViewCell: UICollectionViewCell {
         self.selectCountLabel.snp.remakeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        // 인디케이터 레이아웃
+        self.indicatorView.snp.remakeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
     
     /// 셀 설정
@@ -134,12 +149,10 @@ extension AssetPickerCollectionViewCell {
         case .video: fallthrough
         case .audio: fallthrough
         default:
-            DispatchQueue.global().async {
-                self.manager.requestImage(for: asset, targetSize: thumbSize, contentMode: .aspectFit, options: nil) { image, info in
-                    DispatchQueue.main.async {
-                        self.thumbImageView.image = image
-                    }
-                }
+            Utils.getImage(asset: asset, targetSize: thumbSize) { progress in
+                
+            } completion: { image in
+                self.thumbImageView.image = image
             }
         }
     }

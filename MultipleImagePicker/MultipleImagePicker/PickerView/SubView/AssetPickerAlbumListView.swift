@@ -8,6 +8,22 @@
 import UIKit
 import Photos           // 미디어 파일 사용
 
+// MARK: - Struct
+struct AlbumList {
+    /// 이름
+    var name: String = ""
+    /// 갯수
+    var count: Int = 0
+    /// 컬렉션
+    var collection: PHAssetCollection
+    
+    init(name: String, count: Int, collection: PHAssetCollection) {
+        self.name = name
+        self.count = count
+        self.collection = collection
+    }
+}
+
 class AssetPickerAlbumListView: UIView {
     /// 생성자
     /// - Returns: 뷰
@@ -17,23 +33,8 @@ class AssetPickerAlbumListView: UIView {
         return view
     }
     
-    // MARK: - Struct
-    struct AlbumList {
-        /// 이름
-        var name: String = ""
-        /// 갯수
-        var count: Int = 0
-        /// 컬렉션
-        var collection: PHAssetCollection
-        
-        init(name: String, count: Int, collection: PHAssetCollection) {
-            self.name = name
-            self.count = count
-            self.collection = collection
-        }
-    }
-    
     // MARK: - 상수
+    let CELL_ID = "AssetPickerAlbumTableViewCell"
     
     // MARK: - 뷰
     /// 테이블 뷰
@@ -64,18 +65,48 @@ extension AssetPickerAlbumListView: SetTableView {
     }
     
     func updateLayoutView() {
+        // 테이블 뷰 레이아웃 설정
         self.tableView.snp.remakeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
     
     func initTableView() {
+        self.tableView.register(AssetPickerAlbumTableViewCell.self, forCellReuseIdentifier: self.CELL_ID)
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        self.tableView.rowHeight = 78
     }
     
     func initLoadView() {
         
+    }
+    
+    /// 뷰 표시/숨김 처리
+    func setShowView() {
+        self.isHidden = false
+        self.alpha = 0
+        UIView.animate(withDuration: 0.5,
+                       delay: 0, usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: 1.0,
+                       options: .curveEaseInOut, animations: {
+            self.alpha = 1
+        }, completion: nil)
+    }
+    
+    func setHideView() {
+        UIView.animate(withDuration: 0.5,
+                       delay: 0, usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: 1.0,
+                       options: .curveEaseInOut, animations: {
+            self.alpha = 0
+        }) { complete in
+            if complete {
+                self.isHidden = true
+            }
+        }
     }
 }
 
@@ -84,6 +115,8 @@ extension AssetPickerAlbumListView {
     /// 앨범 리스트 조회
     /// - Parameter mediaType: 미디어 타입
     public func requestLoadAlbumList(mediaType: Array<PHAssetMediaType>) {
+        self.albumList.removeAll()
+        
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
             NSSortDescriptor(key: "creationDate", ascending: false)
@@ -107,13 +140,13 @@ extension AssetPickerAlbumListView {
         fetchOptions.predicate = query
         
         // 조회 후 배열에 넣어주기
-        self.getAlbumList(albumType: .smartAlbum, fetchOptions: fetchOptions) { list in
+        self.getAlbumList(albumType: .smartAlbum, fetchOptions: PHFetchOptions()) { list in
             self.albumList.append(list)
             self.tableView.reloadData()
         }
         
         // 조회 후 배열에 넣어주기
-        self.getAlbumList(albumType: .album, fetchOptions: fetchOptions) { list in
+        self.getAlbumList(albumType: .album, fetchOptions: PHFetchOptions()) { list in
             self.albumList.append(list)
             self.tableView.reloadData()
         }
@@ -146,10 +179,26 @@ extension AssetPickerAlbumListView {
 // MARK: - ㄴ 테이블 뷰 관련
 extension AssetPickerAlbumListView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return self.albumList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: self.CELL_ID, for: indexPath) as? AssetPickerAlbumTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        let row = indexPath.row
+        let album = self.albumList[row]
+        cell.configureCell(album)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let row = indexPath.row
+        let album = self.albumList[row]
+        self.onSelect?(album.collection)
     }
 }

@@ -64,22 +64,28 @@ class AssetPickerViewController: BaseViewController {
     /// 선택 리스트 카운트 라벨
     @IBOutlet weak var selectCountLabel: UILabel!
     
+    // MARK: - 뷰
     /// 메인 스택 뷰
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         return stackView
     }()
-    
     /// 선택 리스트 뷰
     private lazy var selectListView: AssetPickerSelectListView = {
         let view = AssetPickerSelectListView.instance()
         return view
     }()
-    
     /// 컬렉션 뷰
     private lazy var collectionView: UICollectionView = {
         return UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    }()
+    /// 앨범 리스트 뷰
+    private lazy var albumListView: AssetPickerAlbumListView = {
+        let view = AssetPickerAlbumListView.instance()
+        view.alpha = 0
+        view.isHidden = true
+        return view
     }()
     
     // MARK: - 데이터 소스
@@ -92,7 +98,7 @@ class AssetPickerViewController: BaseViewController {
     
     // MARK: - 데이터
     /// 피커 타입
-    lazy var option: PickerConfiguration = PickerConfiguration()
+    private lazy var option: PickerConfiguration = PickerConfiguration()
     /// 미디어 파일 배열
     private lazy var phAssets: Array<PHAsset> = []
     /// 선택 리스트
@@ -122,6 +128,9 @@ extension AssetPickerViewController {
         self.mainStackView.addArrangedSubview(self.selectListView)
         self.mainStackView.addArrangedSubview(self.collectionView)
         
+        // 앨범 리스트 뷰 넣기
+        self.view.addSubview(self.albumListView)
+        
         // 레이아웃 설정
         self.updateLayoutView()
         
@@ -130,7 +139,9 @@ extension AssetPickerViewController {
         
         // 뷰 로드 처리
         self.albumPermission {
-            self.initLoadView()
+            DispatchQueue.main.async {
+                self.initLoadView()
+            }
         }
     }
 
@@ -145,6 +156,12 @@ extension AssetPickerViewController {
         // 2. 선택 리스트뷰 높이 설정
         self.selectListView.snp.remakeConstraints { make in
             make.height.equalTo(self.SELECT_LIST_HEIGHT)
+        }
+        
+        // 3. 앨범 리스트 뷰 높이 설정
+        self.albumListView.snp.remakeConstraints { make in
+            make.top.equalTo(self.naviView.snp.bottom)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
     
@@ -175,6 +192,26 @@ extension AssetPickerViewController {
         
         // 미디어 파일 추출
         self.fetchAssetList()
+        
+        // 앨범 리스트 추출
+        self.albumListView.onSelect = { collection in
+            self.albumListView.setHideView()
+            
+            let fetchOptions = PHFetchOptions()
+            fetchOptions.sortDescriptors = [
+                NSSortDescriptor(key: "creationDate", ascending: false)
+            ]
+            let fetchAssets = PHAsset.fetchAssets(in: collection, options: fetchOptions)
+            
+            // 데이터 설정
+            self.phAssets.removeAll()
+            fetchAssets.enumerateObjects { asset, count, stop in
+                self.phAssets.append(asset)
+            }
+            
+            // 뷰 갱신
+            self.reloadCollectionView(self.phAssets, animated: false)
+        }
     }
 }
 
@@ -195,7 +232,17 @@ extension AssetPickerViewController {
     /// 앨범리스트 버튼 클릭 시
     /// - Parameter sender: 리스트 버튼
     @IBAction func didTappedAlbumListBtn(_ sender: UIButton) {
-        print("리스트 버튼 클릭")
+        var typeList: Array<PHAssetMediaType> = []
+        switch self.option.type {
+        case .PHOTO: typeList.append(.image)
+        case .VIDEO: typeList.append(.video)
+        default:
+            typeList.append(.image)
+            typeList.append(.video)
+        }
+        
+        self.albumListView.requestLoadAlbumList(mediaType: typeList)
+        self.albumListView.setShowView()
     }
 }
 
@@ -302,14 +349,9 @@ extension AssetPickerViewController: UICollectionViewDelegate {
         
         // 선택 중이 아니라면 추가
         let thumbSize = CGSize(width: UIScreen.main.scale * self.THUMB_HEIGHT, height: UIScreen.main.scale * self.THUMB_HEIGHT)
-        self.manager.requestImage(for: item, targetSize: thumbSize, contentMode: .aspectFill, options: nil) { (image, info) in
-            // 임시 썸네일이 출력되므로 해당 내용은 진행하지 않는다
-            guard let info = info,
-                  let realImageKey = info["PHImageResultIsDegradedKey"] as? Int,
-                  realImageKey == 0 else {
-                return
-            }
+        Utils.getImage(asset: item, targetSize: thumbSize) { progress in
             
+        } completion: { image in
             let makeItem = SelectedPickerItem(id: item.localIdentifier,
                                               selectNum: self.selectList.count + 1,
                                               asset: item,
