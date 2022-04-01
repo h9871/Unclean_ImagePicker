@@ -44,9 +44,10 @@ class AssetPickerViewController: BaseViewController {
     
     /// 생성자
     /// - Returns: 피커 뷰 컨트롤러
-    class func instance(option: PickerConfiguration) -> AssetPickerViewController {
+    class func instance(option: PickerConfiguration, complete: @escaping (Array<PHAsset>) -> Void) -> AssetPickerViewController {
         let view = AssetPickerViewController()
         view.option = option
+        view.confirmHandler = complete
         return view
     }
     
@@ -106,6 +107,10 @@ class AssetPickerViewController: BaseViewController {
     }
     /// 이미지 매니저
     private let manager = PHImageManager.default()
+    
+    // MARK: - 핸들러
+    /// 확인 핸들러
+    private var confirmHandler: ((Array<PHAsset>) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -238,7 +243,9 @@ extension AssetPickerViewController: AssetPickerNaviViewDelegate {
     
     /// 확인 버튼 클릭 시
     func didTappedConfirmBtn() {
-        print("확인 버튼 클릭")
+        let returnList = self.selectList.map { $0.asset }
+        self.confirmHandler?(returnList)
+        self.didTappedBackBtn()
     }
 }
 

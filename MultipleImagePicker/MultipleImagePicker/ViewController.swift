@@ -18,7 +18,9 @@ class ViewController: UIViewController {
     /// - Parameter sender: 시작 버튼
     @IBAction func didTappedStartBtn(_ sender: UIButton) {
         let option = PickerConfiguration(type: .ALL, isOnePick: false)
-        let vc = AssetPickerViewController.instance(option: option)
+        let vc = AssetPickerViewController.instance(option: option) { list in
+            print(list)
+        }
         self.present(vc, animated: true, completion: nil)
     }
 }
