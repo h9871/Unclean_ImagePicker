@@ -18,11 +18,11 @@
 		5D874A4F27DB17020026ABB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D874A4E27DB17020026ABB2 /* Assets.xcassets */; };
 		5D874A5227DB17020026ABB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D874A5027DB17020026ABB2 /* LaunchScreen.storyboard */; };
 		5D874A5F27DB18D60026ABB2 /* AssetPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A5E27DB18D60026ABB2 /* AssetPickerViewController.swift */; };
-		5D874A6127DB1CD90026ABB2 /* AssetPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D874A6027DB1CD90026ABB2 /* AssetPickerViewController.xib */; };
 		5D874A6427DB205B0026ABB2 /* AssetPickerSelectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A6327DB205B0026ABB2 /* AssetPickerSelectListView.swift */; };
 		5D874A6927DB22580026ABB2 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5D874A6827DB22580026ABB2 /* SnapKit */; };
 		5D874A6C27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A6B27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift */; };
 		5D874A6F27DB2CB70026ABB2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A6E27DB2CB70026ABB2 /* BaseViewController.swift */; };
+		5D8B2ED227F6D51900F78DA6 /* AssetPickerNaviView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8B2ED127F6D51900F78DA6 /* AssetPickerNaviView.swift */; };
 		5DBD8AC427F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBD8AC327F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,10 +40,10 @@
 		5D874A5127DB17020026ABB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5D874A5327DB17020026ABB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D874A5E27DB18D60026ABB2 /* AssetPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerViewController.swift; sourceTree = "<group>"; };
-		5D874A6027DB1CD90026ABB2 /* AssetPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssetPickerViewController.xib; sourceTree = "<group>"; };
 		5D874A6327DB205B0026ABB2 /* AssetPickerSelectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerSelectListView.swift; sourceTree = "<group>"; };
 		5D874A6B27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		5D874A6E27DB2CB70026ABB2 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		5D8B2ED127F6D51900F78DA6 /* AssetPickerNaviView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerNaviView.swift; sourceTree = "<group>"; };
 		5DBD8AC327F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerAlbumTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -119,9 +119,9 @@
 		5D874A5B27DB18760026ABB2 /* PickerView */ = {
 			isa = PBXGroup;
 			children = (
+				5D8B2ED027F6D50000F78DA6 /* NaviView */,
 				5D874A6227DB202C0026ABB2 /* SubView */,
 				5D874A5E27DB18D60026ABB2 /* AssetPickerViewController.swift */,
-				5D874A6027DB1CD90026ABB2 /* AssetPickerViewController.xib */,
 			);
 			path = PickerView;
 			sourceTree = "<group>";
@@ -153,6 +153,14 @@
 				5D60D93627E948FF000D6914 /* Utils.swift */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		5D8B2ED027F6D50000F78DA6 /* NaviView */ = {
+			isa = PBXGroup;
+			children = (
+				5D8B2ED127F6D51900F78DA6 /* AssetPickerNaviView.swift */,
+			);
+			path = NaviView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,7 +230,6 @@
 				5D874A5227DB17020026ABB2 /* LaunchScreen.storyboard in Resources */,
 				5D874A4F27DB17020026ABB2 /* Assets.xcassets in Resources */,
 				5D874A4D27DB17010026ABB2 /* Main.storyboard in Resources */,
-				5D874A6127DB1CD90026ABB2 /* AssetPickerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +246,7 @@
 				5D874A4627DB17010026ABB2 /* AppDelegate.swift in Sources */,
 				5D27E3A927E1BC8100DE2ABA /* AssetSelectedThumbView.swift in Sources */,
 				5DBD8AC427F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift in Sources */,
+				5D8B2ED227F6D51900F78DA6 /* AssetPickerNaviView.swift in Sources */,
 				5D874A4827DB17010026ABB2 /* SceneDelegate.swift in Sources */,
 				5D60D93727E948FF000D6914 /* Utils.swift in Sources */,
 				5D874A5F27DB18D60026ABB2 /* AssetPickerViewController.swift in Sources */,

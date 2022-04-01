@@ -89,6 +89,13 @@ extension AssetPickerSelectListView {
         self.thumbStackView.addArrangedSubview(thumbView)
         thumbView.widthAnchor.constraint(equalToConstant: 53).isActive = true
         self.layoutIfNeeded()
+        
+        // 컨텐츠 사이즈가 뷰의 사이즈를 넘을 시 맨 우측으로 스크롤 진행
+        if self.scrollView.contentSize.width >= self.bounds.width {
+            let rightOffset = CGPoint(x: self.scrollView.contentSize.width - self.scrollView.bounds.width + self.scrollView.contentInset.right,
+                                      y: 0)
+            self.scrollView.setContentOffset(rightOffset, animated: true)
+        }
     }
     
     /// 리스트 삭제

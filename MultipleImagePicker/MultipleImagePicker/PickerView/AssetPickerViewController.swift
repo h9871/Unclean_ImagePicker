@@ -10,6 +10,8 @@ import Photos           // 미디어 파일 사용
 
 /// 피커 옵션
 struct PickerConfiguration {
+    /// 모달 타입
+    var isFull: Bool = false
     /// 피커 타입
     var type: PickerType = .ALL
     /// 단일선택, 다중선택
@@ -43,7 +45,7 @@ class AssetPickerViewController: BaseViewController {
     /// 생성자
     /// - Returns: 피커 뷰 컨트롤러
     class func instance(option: PickerConfiguration) -> AssetPickerViewController {
-        let view = AssetPickerViewController(nibName: "AssetPickerViewController", bundle: nil)
+        let view = AssetPickerViewController()
         view.option = option
         return view
     }
@@ -53,18 +55,12 @@ class AssetPickerViewController: BaseViewController {
     let SELECT_LIST_HEIGHT: CGFloat = 88
     let THUMB_HEIGHT: CGFloat = 50
     
-    /// 네비게이션 뷰
-    @IBOutlet weak var naviView: UIView!
-    /// 뒤로가기 버튼
-    @IBOutlet weak var backBtn: UIButton!
-    /// 앨범 리스트 버튼
-    @IBOutlet weak var albumListBtn: UIButton!
-    /// 확인 버튼
-    @IBOutlet weak var confirmBtn: UIButton!
-    /// 선택 리스트 카운트 라벨
-    @IBOutlet weak var selectCountLabel: UILabel!
-    
     // MARK: - 뷰
+    /// 네비게이션 뷰
+    private lazy var naviView: AssetPickerNaviView = {
+        let view = AssetPickerNaviView.instance(delegate: self)
+        return view
+    }()
     /// 메인 스택 뷰
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -104,8 +100,8 @@ class AssetPickerViewController: BaseViewController {
     /// 선택 리스트
     private lazy var selectList: Array<SelectedPickerItem> = [] {
         didSet {
-            self.selectCountLabel.isHidden = (self.selectList.count < 1)
-            self.selectCountLabel.text = "\(self.selectList.count)"
+            // 카운트 라벨 업데이트
+            self.naviView.updateCountLabel(self.selectList.count)
         }
     }
     /// 이미지 매니저
@@ -121,6 +117,9 @@ class AssetPickerViewController: BaseViewController {
 extension AssetPickerViewController {
     /// 뷰 생성
     private func initView() {
+        // 네비게이션 뷰 넣기
+        self.view.addSubview(self.naviView)
+        
         // 메인 스택 뷰 넣기
         self.view.addSubview(self.mainStackView)
         
@@ -147,6 +146,12 @@ extension AssetPickerViewController {
 
     /// 뷰 레이아웃 설정
     private func updateLayoutView() {
+        // 1. 네비게이션 뷰 레이아웃 설정
+        self.naviView.snp.remakeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(self.naviView.height + 44)
+        }
+        
         // 1. 메인 스택 뷰 레이아웃 설정
         self.mainStackView.snp.remakeConstraints { make in
             make.top.equalTo(self.naviView.snp.bottom)
@@ -184,6 +189,9 @@ extension AssetPickerViewController {
     
     /// 화면 로드
     private func initLoadView() {
+        // 배경색 설정
+        self.view.backgroundColor = .white
+        
         // 선택 리스트 델리게이트
         self.selectListView.delegate = self
         
@@ -195,6 +203,7 @@ extension AssetPickerViewController {
         
         // 앨범 리스트 추출
         self.albumListView.onSelect = { collection in
+            self.naviView.updateAlbumListBtn(false)
             self.albumListView.setHideView()
             
             let fetchOptions = PHFetchOptions()
@@ -216,33 +225,20 @@ extension AssetPickerViewController {
 }
 
 // MARK: - ㄴ 네비게이션 관련
-extension AssetPickerViewController {
+extension AssetPickerViewController: AssetPickerNaviViewDelegate {
     /// 뒤로가기 버튼 클릭 시
-    /// - Parameter sender: 뒤로가기 버튼
-    @IBAction func didTappedBackBtn(_ sender: UIButton) {
+    func didTappedBackBtn() {
         self.dismiss(animated: true, completion: nil)
     }
     
-    /// 확인 버튼 클릭 시
-    /// - Parameter sender: 확인 버튼
-    @IBAction func didTappedConfirmBtn(_ sender: UIButton) {
-        print("확인 버튼 클릭")
+    /// 앨범 리스트 버튼 클릭 시
+    func didTappedAlbumListBtn(isSelect: Bool) {
+        self.setAlbumListView(isSelect)
     }
     
-    /// 앨범리스트 버튼 클릭 시
-    /// - Parameter sender: 리스트 버튼
-    @IBAction func didTappedAlbumListBtn(_ sender: UIButton) {
-        var typeList: Array<PHAssetMediaType> = []
-        switch self.option.type {
-        case .PHOTO: typeList.append(.image)
-        case .VIDEO: typeList.append(.video)
-        default:
-            typeList.append(.image)
-            typeList.append(.video)
-        }
-        
-        self.albumListView.requestLoadAlbumList(mediaType: typeList)
-        self.albumListView.setShowView()
+    /// 확인 버튼 클릭 시
+    func didTappedConfirmBtn() {
+        print("확인 버튼 클릭")
     }
 }
 
@@ -313,7 +309,6 @@ extension AssetPickerViewController: AssetPickerSelectListViewDelegate {
     private func refreshView() {
         // 선택 리스트 뷰 표시 여부
         self.showSelectListView(isHidden: self.selectList.count < 1)
-        
         // 컬렉션 뷰 리로드
         self.reloadCollectionView(self.phAssets)
     }
@@ -325,6 +320,30 @@ extension AssetPickerViewController: AssetPickerSelectListViewDelegate {
         UIView.animate(withDuration: 0.2) {
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+// MARK: - ㄴ 앨범 리스트 뷰 관련
+extension AssetPickerViewController {
+    /// 앨범 리스트 프로세스
+    /// - Parameter isSelect: 선택 여부
+    private func setAlbumListView(_ isSelect: Bool) {        
+        if !isSelect {
+            self.albumListView.setHideView()
+            return
+        }
+        
+        var typeList: Array<PHAssetMediaType> = []
+        switch self.option.type {
+        case .PHOTO: typeList.append(.image)
+        case .VIDEO: typeList.append(.video)
+        default:
+            typeList.append(.image)
+            typeList.append(.video)
+        }
+        
+        self.albumListView.requestLoadAlbumList(mediaType: typeList)
+        self.albumListView.setShowView()
     }
 }
 
