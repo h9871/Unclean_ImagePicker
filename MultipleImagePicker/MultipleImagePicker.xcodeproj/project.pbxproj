@@ -129,21 +129,11 @@
 		5D874A6227DB202C0026ABB2 /* SubView */ = {
 			isa = PBXGroup;
 			children = (
-				5D874A6A27DB26F80026ABB2 /* Cell */,
-				5D874A6327DB205B0026ABB2 /* AssetPickerSelectListView.swift */,
-				5D18B17827F2F3F80005B6EE /* AssetPickerAlbumListView.swift */,
+				5DFEA2CA27FAEBFF00DD17EA /* Cell */,
+				5DFEA2C927FAEBAF00DD17EA /* AlbumList(앨범 리스트) */,
+				5DFEA2C827FAEB9A00DD17EA /* SelectList(선택 리스트) */,
 			);
 			path = SubView;
-			sourceTree = "<group>";
-		};
-		5D874A6A27DB26F80026ABB2 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				5D874A6B27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift */,
-				5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */,
-				5DBD8AC327F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift */,
-			);
-			path = Cell;
 			sourceTree = "<group>";
 		};
 		5D874A6D27DB2C8D0026ABB2 /* Base */ = {
@@ -161,6 +151,42 @@
 				5D8B2ED127F6D51900F78DA6 /* AssetPickerNaviView.swift */,
 			);
 			path = NaviView;
+			sourceTree = "<group>";
+		};
+		5DFEA2C827FAEB9A00DD17EA /* SelectList(선택 리스트) */ = {
+			isa = PBXGroup;
+			children = (
+				5DFEA2CB27FAEC0C00DD17EA /* Cell */,
+				5D874A6327DB205B0026ABB2 /* AssetPickerSelectListView.swift */,
+			);
+			name = "SelectList(선택 리스트)";
+			path = "SelectList(선택 리스트)";
+			sourceTree = "<group>";
+		};
+		5DFEA2C927FAEBAF00DD17EA /* AlbumList(앨범 리스트) */ = {
+			isa = PBXGroup;
+			children = (
+				5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */,
+				5D18B17827F2F3F80005B6EE /* AssetPickerAlbumListView.swift */,
+			);
+			name = "AlbumList(앨범 리스트)";
+			path = "AlbumList(앨범 리스트)";
+			sourceTree = "<group>";
+		};
+		5DFEA2CA27FAEBFF00DD17EA /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				5D874A6B27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		5DFEA2CB27FAEC0C00DD17EA /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				5DBD8AC327F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
