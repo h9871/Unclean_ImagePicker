@@ -15,14 +15,19 @@ class AssetSelectedThumbView: UIView {
     /// 썸네일 이미지 뷰
     private lazy var thumbImage: UIImageView = {
         let imageView = UIImageView()
+        imageView.layer.borderWidth = 0.5
+        imageView.layer.borderColor = UIColor.blue.cgColor
         imageView.layer.cornerRadius = 6
         imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
     /// 닫기 버튼
     private lazy var closeImageBtn: UIButton = {
         let button = UIButton()
+        button.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
         return button
