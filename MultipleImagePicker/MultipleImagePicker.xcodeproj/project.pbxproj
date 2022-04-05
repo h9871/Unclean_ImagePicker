@@ -23,6 +23,7 @@
 		5D874A6C27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A6B27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift */; };
 		5D874A6F27DB2CB70026ABB2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A6E27DB2CB70026ABB2 /* BaseViewController.swift */; };
 		5D8B2ED227F6D51900F78DA6 /* AssetPickerNaviView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8B2ED127F6D51900F78DA6 /* AssetPickerNaviView.swift */; };
+		5DBC0F3827FBBE2D00B65A68 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5DBC0F3727FBBE2D00B65A68 /* README.md */; };
 		5DBD8AC427F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBD8AC327F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		5D874A6B27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		5D874A6E27DB2CB70026ABB2 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		5D8B2ED127F6D51900F78DA6 /* AssetPickerNaviView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerNaviView.swift; sourceTree = "<group>"; };
+		5DBC0F3727FBBE2D00B65A68 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		5DBD8AC327F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerAlbumTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,6 +72,7 @@
 		5D874A3927DB17010026ABB2 = {
 			isa = PBXGroup;
 			children = (
+				5DBC0F3727FBBE2D00B65A68 /* README.md */,
 				5D874A4427DB17010026ABB2 /* MultipleImagePicker */,
 				5D874A4327DB17010026ABB2 /* Products */,
 			);
@@ -156,7 +159,7 @@
 		5DFEA2C827FAEB9A00DD17EA /* SelectList(선택 리스트) */ = {
 			isa = PBXGroup;
 			children = (
-				5DFEA2CB27FAEC0C00DD17EA /* Cell */,
+				5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */,
 				5D874A6327DB205B0026ABB2 /* AssetPickerSelectListView.swift */,
 			);
 			name = "SelectList(선택 리스트)";
@@ -166,7 +169,7 @@
 		5DFEA2C927FAEBAF00DD17EA /* AlbumList(앨범 리스트) */ = {
 			isa = PBXGroup;
 			children = (
-				5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */,
+				5DFEA2CB27FAEC0C00DD17EA /* Cell */,
 				5D18B17827F2F3F80005B6EE /* AssetPickerAlbumListView.swift */,
 			);
 			name = "AlbumList(앨범 리스트)";
@@ -255,6 +258,7 @@
 			files = (
 				5D874A5227DB17020026ABB2 /* LaunchScreen.storyboard in Resources */,
 				5D874A4F27DB17020026ABB2 /* Assets.xcassets in Resources */,
+				5DBC0F3827FBBE2D00B65A68 /* README.md in Resources */,
 				5D874A4D27DB17010026ABB2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
