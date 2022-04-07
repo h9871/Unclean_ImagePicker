@@ -16,7 +16,7 @@ class BaseViewController: UIViewController {
     }
 }
 
-// MARK: - ㄴ 화면 비율 계산
+// MARK: - ㄴ 화면 관련
 extension BaseViewController {
     /// 화면 비율 계산 (regular, ragular)
     /// - Parameter trait: 뷰 화면 비율
@@ -34,6 +34,30 @@ extension BaseViewController {
         }
         
         return isTraitRR
+    }
+    
+    /// modal 스타일이 풀 화면인지 체크
+    /// - Parameter style: 모달 스타일
+    /// - Returns: 확인 여부
+    func isFullScreen(style: UIModalPresentationStyle) -> Bool {
+        var isFull = false
+        
+        switch style {
+        case .fullScreen: isFull = true
+        case .pageSheet: fallthrough
+        case .formSheet: fallthrough
+        case .currentContext: fallthrough
+        case .custom: break
+        case .overFullScreen: isFull = true
+        case .overCurrentContext: fallthrough
+        case .popover: fallthrough
+        case .blurOverFullScreen: fallthrough
+        case .none: fallthrough
+        case .automatic: break
+        @unknown default:
+            fatalError()
+        }
+        return isFull
     }
 }
 

@@ -154,7 +154,11 @@ extension AssetPickerViewController {
         // 1. 네비게이션 뷰 레이아웃 설정
         self.naviView.snp.remakeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(self.naviView.height + 44)
+            var addHeight: CGFloat = 0
+            if self.isFullScreen(style: self.modalPresentationStyle) {
+                addHeight = Utils.getSafeAreaTop()
+            }
+            make.height.equalTo(self.naviView.height + addHeight)
         }
         
         // 1. 메인 스택 뷰 레이아웃 설정

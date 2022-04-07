@@ -88,3 +88,24 @@ class Utils {
         }
     }
 }
+
+// MARK: - ㄴ Safe Area 관련
+extension Utils {
+    /// 세이프 에이리어 탑 추출
+    /// - Returns: 수치
+    class func getSafeAreaTop() -> CGFloat {
+        return (UIApplication.shared.getWindow?.safeAreaInsets.top ?? 0)
+    }
+    
+    /// 세이프 에이리어 바텀 추출
+    /// - Returns: 수치
+    class func getSafeAreaBottom() -> CGFloat {
+        return (UIApplication.shared.getWindow?.safeAreaInsets.bottom ?? 0)
+    }
+    
+    /// 세이프 에이리어 영역 추출
+    /// - Returns: 영역
+    class func getSafeArea() -> CGRect {
+        return (UIApplication.shared.getWindow?.safeAreaLayoutGuide.layoutFrame ?? .zero)
+    }
+}
