@@ -287,7 +287,9 @@ extension AssetPickerViewController {
         snapshot.appendSections([.main])
         snapshot.appendItems(list)
         snapshot.reloadItems(list)
-        self.dataSource.apply(snapshot, animatingDifferences: animated)
+        DispatchQueue.global(qos: .background).async {
+            self.dataSource.apply(snapshot, animatingDifferences: animated)
+        }
     }
     
     /// 선택 해제 처리
