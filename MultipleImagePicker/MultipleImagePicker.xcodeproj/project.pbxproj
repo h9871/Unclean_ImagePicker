@@ -14,6 +14,7 @@
 		5D3245922807FC2900D52A6C /* AssetPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3245912807FC2900D52A6C /* AssetPickerViewModel.swift */; };
 		5D40343327FE64AB002B3D21 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D40343227FE64AB002B3D21 /* UIApplication+Extensions.swift */; };
 		5D60D93727E948FF000D6914 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D60D93627E948FF000D6914 /* Utils.swift */; };
+		5D6D320F280928DA0000E5DE /* AssetPickerSelectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6D320E280928DA0000E5DE /* AssetPickerSelectListView.swift */; };
 		5D874A4627DB17010026ABB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A4527DB17010026ABB2 /* AppDelegate.swift */; };
 		5D874A4827DB17010026ABB2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A4727DB17010026ABB2 /* SceneDelegate.swift */; };
 		5D874A4A27DB17010026ABB2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A4927DB17010026ABB2 /* ViewController.swift */; };
@@ -37,6 +38,7 @@
 		5D3245912807FC2900D52A6C /* AssetPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerViewModel.swift; sourceTree = "<group>"; };
 		5D40343227FE64AB002B3D21 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		5D60D93627E948FF000D6914 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		5D6D320E280928DA0000E5DE /* AssetPickerSelectListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetPickerSelectListView.swift; sourceTree = "<group>"; };
 		5D874A4227DB17010026ABB2 /* MultipleImagePicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultipleImagePicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D874A4527DB17010026ABB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D874A4727DB17010026ABB2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 		5DFEA2C827FAEB9A00DD17EA /* SelectList(선택 리스트) */ = {
 			isa = PBXGroup;
 			children = (
+				5D6D320E280928DA0000E5DE /* AssetPickerSelectListView.swift */,
 				5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */,
 			);
 			name = "SelectList(선택 리스트)";
@@ -299,6 +302,7 @@
 				5D874A6C27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift in Sources */,
 				5D18B17C27F2F74A0005B6EE /* Photos+Extensions.swift in Sources */,
 				5D3245922807FC2900D52A6C /* AssetPickerViewModel.swift in Sources */,
+				5D6D320F280928DA0000E5DE /* AssetPickerSelectListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
