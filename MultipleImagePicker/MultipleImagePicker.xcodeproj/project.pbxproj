@@ -10,6 +10,8 @@
 		5D18B17927F2F3F80005B6EE /* AssetPickerAlbumListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18B17827F2F3F80005B6EE /* AssetPickerAlbumListView.swift */; };
 		5D18B17C27F2F74A0005B6EE /* Photos+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18B17B27F2F74A0005B6EE /* Photos+Extensions.swift */; };
 		5D27E3A927E1BC8100DE2ABA /* AssetSelectedThumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */; };
+		5D32458F2807FAF500D52A6C /* ObservavleClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D32458E2807FAF500D52A6C /* ObservavleClass.swift */; };
+		5D3245922807FC2900D52A6C /* AssetPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3245912807FC2900D52A6C /* AssetPickerViewModel.swift */; };
 		5D40343327FE64AB002B3D21 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D40343227FE64AB002B3D21 /* UIApplication+Extensions.swift */; };
 		5D60D93727E948FF000D6914 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D60D93627E948FF000D6914 /* Utils.swift */; };
 		5D874A4627DB17010026ABB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A4527DB17010026ABB2 /* AppDelegate.swift */; };
@@ -19,11 +21,11 @@
 		5D874A4F27DB17020026ABB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D874A4E27DB17020026ABB2 /* Assets.xcassets */; };
 		5D874A5227DB17020026ABB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D874A5027DB17020026ABB2 /* LaunchScreen.storyboard */; };
 		5D874A5F27DB18D60026ABB2 /* AssetPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A5E27DB18D60026ABB2 /* AssetPickerViewController.swift */; };
-		5D874A6427DB205B0026ABB2 /* AssetPickerSelectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A6327DB205B0026ABB2 /* AssetPickerSelectListView.swift */; };
 		5D874A6927DB22580026ABB2 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5D874A6827DB22580026ABB2 /* SnapKit */; };
 		5D874A6C27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A6B27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift */; };
 		5D874A6F27DB2CB70026ABB2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D874A6E27DB2CB70026ABB2 /* BaseViewController.swift */; };
 		5D8B2ED227F6D51900F78DA6 /* AssetPickerNaviView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8B2ED127F6D51900F78DA6 /* AssetPickerNaviView.swift */; };
+		5D9ED67B280927590079B2BE /* AssetPickerSelectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9ED67A280927590079B2BE /* AssetPickerSelectListView.swift */; };
 		5DBC0F3827FBBE2D00B65A68 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5DBC0F3727FBBE2D00B65A68 /* README.md */; };
 		5DBD8AC427F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBD8AC327F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -32,6 +34,8 @@
 		5D18B17827F2F3F80005B6EE /* AssetPickerAlbumListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerAlbumListView.swift; sourceTree = "<group>"; };
 		5D18B17B27F2F74A0005B6EE /* Photos+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photos+Extensions.swift"; sourceTree = "<group>"; };
 		5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelectedThumbView.swift; sourceTree = "<group>"; };
+		5D32458E2807FAF500D52A6C /* ObservavleClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservavleClass.swift; sourceTree = "<group>"; };
+		5D3245912807FC2900D52A6C /* AssetPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerViewModel.swift; sourceTree = "<group>"; };
 		5D40343227FE64AB002B3D21 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		5D60D93627E948FF000D6914 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		5D874A4227DB17010026ABB2 /* MultipleImagePicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultipleImagePicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -43,10 +47,10 @@
 		5D874A5127DB17020026ABB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5D874A5327DB17020026ABB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D874A5E27DB18D60026ABB2 /* AssetPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerViewController.swift; sourceTree = "<group>"; };
-		5D874A6327DB205B0026ABB2 /* AssetPickerSelectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerSelectListView.swift; sourceTree = "<group>"; };
 		5D874A6B27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		5D874A6E27DB2CB70026ABB2 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		5D8B2ED127F6D51900F78DA6 /* AssetPickerNaviView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerNaviView.swift; sourceTree = "<group>"; };
+		5D9ED67A280927590079B2BE /* AssetPickerSelectListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetPickerSelectListView.swift; sourceTree = "<group>"; };
 		5DBC0F3727FBBE2D00B65A68 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		5DBD8AC327F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerAlbumTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +74,14 @@
 				5D40343227FE64AB002B3D21 /* UIApplication+Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5D3245902807FC1400D52A6C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5D3245912807FC2900D52A6C /* AssetPickerViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		5D874A3927DB17010026ABB2 = {
@@ -125,6 +137,7 @@
 		5D874A5B27DB18760026ABB2 /* PickerView */ = {
 			isa = PBXGroup;
 			children = (
+				5D3245902807FC1400D52A6C /* ViewModel */,
 				5D8B2ED027F6D50000F78DA6 /* NaviView */,
 				5D874A6227DB202C0026ABB2 /* SubView */,
 				5D874A5E27DB18D60026ABB2 /* AssetPickerViewController.swift */,
@@ -147,6 +160,7 @@
 			children = (
 				5D874A6E27DB2CB70026ABB2 /* BaseViewController.swift */,
 				5D60D93627E948FF000D6914 /* Utils.swift */,
+				5D32458E2807FAF500D52A6C /* ObservavleClass.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -162,8 +176,8 @@
 		5DFEA2C827FAEB9A00DD17EA /* SelectList(선택 리스트) */ = {
 			isa = PBXGroup;
 			children = (
+				5D9ED67A280927590079B2BE /* AssetPickerSelectListView.swift */,
 				5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */,
-				5D874A6327DB205B0026ABB2 /* AssetPickerSelectListView.swift */,
 			);
 			name = "SelectList(선택 리스트)";
 			path = "SelectList(선택 리스트)";
@@ -275,10 +289,10 @@
 			files = (
 				5D40343327FE64AB002B3D21 /* UIApplication+Extensions.swift in Sources */,
 				5D874A4A27DB17010026ABB2 /* ViewController.swift in Sources */,
-				5D874A6427DB205B0026ABB2 /* AssetPickerSelectListView.swift in Sources */,
 				5D18B17927F2F3F80005B6EE /* AssetPickerAlbumListView.swift in Sources */,
 				5D874A4627DB17010026ABB2 /* AppDelegate.swift in Sources */,
 				5D27E3A927E1BC8100DE2ABA /* AssetSelectedThumbView.swift in Sources */,
+				5D32458F2807FAF500D52A6C /* ObservavleClass.swift in Sources */,
 				5DBD8AC427F3E06800FE2E53 /* AssetPickerAlbumTableViewCell.swift in Sources */,
 				5D8B2ED227F6D51900F78DA6 /* AssetPickerNaviView.swift in Sources */,
 				5D874A4827DB17010026ABB2 /* SceneDelegate.swift in Sources */,
@@ -287,6 +301,8 @@
 				5D874A6F27DB2CB70026ABB2 /* BaseViewController.swift in Sources */,
 				5D874A6C27DB2B920026ABB2 /* AssetPickerCollectionViewCell.swift in Sources */,
 				5D18B17C27F2F74A0005B6EE /* Photos+Extensions.swift in Sources */,
+				5D3245922807FC2900D52A6C /* AssetPickerViewModel.swift in Sources */,
+				5D9ED67B280927590079B2BE /* AssetPickerSelectListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -31,11 +31,11 @@ enum PickerType {
 /// 선택 아이템
 struct SelectedPickerItem {
     /// 고유 아이디 (Asset 의 고유 ID)
-    var id: String
+    var id: String = ""
     /// 선택 번째
-    var selectNum: Int
+    var selectNum: Int = 0
     /// 미디어 데이터
-    var asset: PHAsset
+    var asset: PHAsset = PHAsset()
     /// 썸네일 이미지
     var thumbImage: UIImage?
 }
@@ -54,7 +54,6 @@ class AssetPickerViewController: BaseViewController {
     // MARK: - 상수
     let CELL_ID = "AssetPickerCollectionViewCell"
     let SELECT_LIST_HEIGHT: CGFloat = 88
-    let THUMB_HEIGHT: CGFloat = 50
     
     // MARK: - 뷰
     /// 네비게이션 뷰
@@ -70,7 +69,7 @@ class AssetPickerViewController: BaseViewController {
     }()
     /// 선택 리스트 뷰
     private lazy var selectListView: AssetPickerSelectListView = {
-        let view = AssetPickerSelectListView.instance()
+        let view = AssetPickerSelectListView.instance(delegate: self)
         return view
     }()
     /// 컬렉션 뷰
@@ -92,19 +91,15 @@ class AssetPickerViewController: BaseViewController {
     }
     /// 데이터 소스
     private var dataSource: UICollectionViewDiffableDataSource<Section, PHAsset>!
+    /// 스냅샷
+    private var snapshot = NSDiffableDataSourceSnapshot<Section, PHAsset>()
     
     // MARK: - 데이터
     /// 피커 타입
     private lazy var option: PickerConfiguration = PickerConfiguration()
-    /// 미디어 파일 배열
-    private lazy var phAssets: Array<PHAsset> = []
-    /// 선택 리스트
-    private lazy var selectList: Array<SelectedPickerItem> = [] {
-        didSet {
-            // 카운트 라벨 업데이트
-            self.naviView.updateCountLabel(self.selectList.count)
-        }
-    }
+    /// 뷰 모델 설정
+    private lazy var assetVM: AssetPickerViewModel = AssetPickerViewModel()
+    
     /// 이미지 매니저
     private let manager = PHImageManager.default()
     
@@ -140,6 +135,9 @@ extension AssetPickerViewController {
         
         // 컬렉션 뷰 초기화
         self.initCollectionView()
+        
+        // 바인드 데이터
+        self.initBindData()
         
         // 뷰 로드 처리
         self.albumPermission {
@@ -188,7 +186,7 @@ extension AssetPickerViewController {
             guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: self.CELL_ID, for: indexPath) as? AssetPickerCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.configureCell(item, self.selectList)
+            cell.configureCell(item, self.assetVM.selectList.value)
             
             return cell
         })
@@ -201,34 +199,47 @@ extension AssetPickerViewController {
         // 배경색 설정
         self.view.backgroundColor = .white
         
-        // 선택 리스트 델리게이트
-        self.selectListView.delegate = self
-        
         // 선택 리스트 뷰 숨김
         self.selectListView.isHidden = true
         
-        // 미디어 파일 추출
-        self.fetchAssetList()
+        // 1. 사진첩 리스트 조회
+        self.assetVM.fetchAssetList(type: self.option.type)        
         
-        // 앨범 리스트 추출
+        // 2. 앨범 리스트 추출
         self.albumListView.onSelect = { collection in
             self.naviView.updateAlbumListBtn(false)
             self.albumListView.setHideView()
+            // 앨범 리스트 조회
+            self.assetVM.fetchAlbumAssetList(collection: collection)
+        }
+    }
+    
+    /// 바인딩 처리
+    private func initBindData() {
+        /// 미디어 리스트 바인딩
+        self.assetVM.assetList.bind { [weak self] assetList in
+            guard let self = self else { return }
+            self.reloadCollectionView(assetList)
+        }
+        
+        /// 선택 리스트 바인딩
+        self.assetVM.selectList.bind { [weak self] selectList in
+            guard let self = self else { return }
+            // 리로드
+            self.reloadCollectionView(self.assetVM.assetList.value)
+            // 선택 뷰 표시
+            self.showSelectListView(isHidden: selectList.count < 1)
+            // 카운트 업데이트
+            self.naviView.updateCountLabel(selectList.count)
+        }
+        
+        /// 선택 아이템 바인딩
+        self.assetVM.selectItem.bind { [weak self] (isRemove: Bool, item: SelectedPickerItem) in
+            guard let self = self else { return }
             
-            let fetchOptions = PHFetchOptions()
-            fetchOptions.sortDescriptors = [
-                NSSortDescriptor(key: "creationDate", ascending: false)
-            ]
-            let fetchAssets = PHAsset.fetchAssets(in: collection, options: fetchOptions)
+            guard item.id != "" else { return }
             
-            // 데이터 설정
-            self.phAssets.removeAll()
-            fetchAssets.enumerateObjects { asset, count, stop in
-                self.phAssets.append(asset)
-            }
-            
-            // 뷰 갱신
-            self.reloadCollectionView(self.phAssets, animated: false)
+            isRemove ? self.selectListView.removePickerItem(item) : self.selectListView.addPickerItem(item)
         }
     }
 }
@@ -241,69 +252,32 @@ extension AssetPickerViewController: AssetPickerNaviViewDelegate {
     }
     
     /// 앨범 리스트 버튼 클릭 시
+    /// - Parameter isSelect: 선택여부
     func didTappedAlbumListBtn(isSelect: Bool) {
         self.setAlbumListView(isSelect)
     }
     
     /// 확인 버튼 클릭 시
     func didTappedConfirmBtn() {
-        let returnList = self.selectList.map { $0.asset }
-        self.confirmHandler?(returnList)
+        self.confirmHandler?(self.assetVM.getSelectList())
         self.didTappedBackBtn()
-    }
-}
-
-// MARK: - ㄴ 데이터 추출
-extension AssetPickerViewController {
-    /// 미디어 리스트 추출
-    private func fetchAssetList() {
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [
-            NSSortDescriptor(key: "creationDate", ascending: false)
-        ]
-        
-        var fetchAssets = PHFetchResult<PHAsset>()
-        switch self.option.type {
-        case .ALL: fetchAssets = PHAsset.fetchAssets(with: fetchOptions)
-        case .PHOTO: fetchAssets = PHAsset.fetchAssets(with: .image, options: fetchOptions)
-        case .VIDEO: fetchAssets = PHAsset.fetchAssets(with: .video, options: fetchOptions)
-        }
-        
-        // 데이터 설정
-        fetchAssets.enumerateObjects { asset, count, stop in
-            self.phAssets.append(asset)
-        }
-        
-        // 리로드
-        self.reloadCollectionView(self.phAssets)
     }
 }
 
 // MARK: - ㄴ 데이터 관련
 extension AssetPickerViewController {
     /// 컬렉션 뷰 리로드
+    /// - Parameters:
+    ///   - list: 리스트
+    ///   - animated: 애니메이션
     private func reloadCollectionView(_ list: Array<PHAsset>, animated: Bool = true) {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, PHAsset>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(list)
-        snapshot.reloadItems(list)
+        self.snapshot = NSDiffableDataSourceSnapshot<Section, PHAsset>()
+        self.snapshot.appendSections([.main])
+        self.snapshot.appendItems(list)
+        self.snapshot.reloadItems(list)
         DispatchQueue.global(qos: .background).async {
-            self.dataSource.apply(snapshot, animatingDifferences: animated)
+            self.dataSource.apply(self.snapshot, animatingDifferences: animated)
         }
-    }
-    
-    /// 선택 해제 처리
-    /// - Parameter id: 선택해제할 미디어의 아이디
-    private func removeSelected(id: String) {
-        // 없으면 진행하지 않는다
-        if self.selectList.count < 1 { return }
-        
-        // 선택해제 처리 후 순서 재설정
-        self.selectList = self.selectList.filter { $0.id != id }.enumerated().map({ (index, item) -> SelectedPickerItem in
-            var tempItem = item
-            tempItem.selectNum = index + 1
-            return tempItem
-        })
     }
 }
 
@@ -312,23 +286,13 @@ extension AssetPickerViewController: AssetPickerSelectListViewDelegate {
     /// 썸네일 리스트 뷰에서 닫기 버튼 클릭 시
     /// - Parameter item: 삭제할 아이템
     func didTappedCloseBtn(_ item: SelectedPickerItem) {
-        // 선택해제
-        self.removeSelected(id: item.id)
-        // 리프레쉬 뷰
-        self.refreshView()
-    }
-    
-    /// 뷰 리프레쉬
-    private func refreshView() {
-        // 선택 리스트 뷰 표시 여부
-        self.showSelectListView(isHidden: self.selectList.count < 1)
-        // 컬렉션 뷰 리로드
-        self.reloadCollectionView(self.phAssets)
+        // 선택 해제
+        self.assetVM.removeSelected(id: item.id)
     }
     
     /// 선택 뷰 표시 여부
-    private func
-    showSelectListView(isHidden: Bool) {
+    /// - Parameter isHidden: 숨김 표시
+    private func showSelectListView(isHidden: Bool) {
         self.selectListView.isHidden = isHidden
         UIView.animate(withDuration: 0.2) {
             self.view.layoutIfNeeded()
@@ -363,40 +327,20 @@ extension AssetPickerViewController {
 // MARK: - ㄴ 컬렉션 뷰 관련
 extension AssetPickerViewController: UICollectionViewDelegate {
     /// 컬렉션 뷰 셀 선택 시
+    /// - Parameters:
+    ///   - collectionView: 컬렉션 뷰
+    ///   - indexPath: 인덱스
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = self.dataSource.itemIdentifier(for: indexPath) else {
             return
         }
-        
-        // 이미 선택 중인지 확인
-        for element in self.selectList where element.id == item.localIdentifier {
-            // 선택해제
-            self.removeSelected(id: element.id)
-            // 선택 리스트 뷰 삭제
-            self.selectListView.removePickerItem(element)
-            // 리프레쉬 뷰
-            self.refreshView()
-            return
-        }
-        
-        // 선택 중이 아니라면 추가
-        let thumbSize = CGSize(width: UIScreen.main.scale * self.THUMB_HEIGHT, height: UIScreen.main.scale * self.THUMB_HEIGHT)
-        Utils.getImage(asset: item, targetSize: thumbSize) { progress in
-            
-        } completion: { image in
-            let makeItem = SelectedPickerItem(id: item.localIdentifier,
-                                              selectNum: self.selectList.count + 1,
-                                              asset: item,
-                                              thumbImage: image)
-            // 아이템 생성
-            self.selectList.append(makeItem)
-            // 선택 리스트 뷰 추가
-            self.selectListView.addPickerItem(makeItem)
-            // 리프레쉬 뷰
-            self.refreshView()
-        }
+        // 선택 처리 진행
+        self.assetVM.selectedAsset(item: item)
     }
-    
+}
+
+// MARK: - ㄴ 컬렉션 뷰 레이아웃 관련
+extension AssetPickerViewController {
     /// 컬렉션 뷰 레이아웃 생성 (Compositional Layout)
     /// - Returns: 레이아웃
     private func createLayout() -> UICollectionViewCompositionalLayout {

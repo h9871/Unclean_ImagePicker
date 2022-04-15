@@ -17,8 +17,9 @@ protocol AssetPickerSelectListViewDelegate {
 class AssetPickerSelectListView: UIView {
     /// 생성자
     /// - Returns: 뷰
-    class func instance() -> AssetPickerSelectListView {
+    class func instance(delegate: AssetPickerSelectListViewDelegate? = nil) -> AssetPickerSelectListView {
         let view = AssetPickerSelectListView()
+        view.delegate = delegate
         view.initView()
         return view
     }
@@ -78,7 +79,7 @@ extension AssetPickerSelectListView {
 }
 
 // MARK: - ㄴ 데이터 관련
-extension AssetPickerSelectListView {
+extension AssetPickerSelectListView {    
     /// 리스트 추가
     /// - Parameter item: 추가할 아이템
     func addPickerItem(_ item: SelectedPickerItem) {
