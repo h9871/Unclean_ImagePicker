@@ -48,8 +48,6 @@ class AssetPickerNaviView: UIView {
             self.delegate?.didTappedBackBtn()
         }))
         button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
-        //button.setImage(UIImage(named: ""), for: .normal)
-        //button.setImage(UIImage(named: ""), for: .highlighted)
         return button
     }()
     
@@ -63,8 +61,6 @@ class AssetPickerNaviView: UIView {
         button.setTitle("사진첩", for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.setImage(UIImage(systemName: "arrow.down.circle"), for: .normal)
-        //button.setImage(UIImage(named: "arrow.down.circle"), for: .normal)
-        //button.setImage(UIImage(named: ""), for: .highlighted)
         button.semanticContentAttribute = .forceRightToLeft
         return button
     }()
@@ -82,8 +78,6 @@ class AssetPickerNaviView: UIView {
             self.delegate?.didTappedConfirmBtn()
         }))
         button.setImage(UIImage(systemName: "paperplane"), for: .normal)
-        //button.setImage(UIImage(named: "paperplane"), for: .normal)
-        //button.setImage(UIImage(named: ""), for: .highlighted)
         return button
     }()
     

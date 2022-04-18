@@ -8,38 +8,6 @@
 import UIKit
 import Photos           // 미디어 파일 사용
 
-/// 피커 옵션
-struct PickerConfiguration {
-    /// 모달 타입
-    var isFull: Bool = false
-    /// 피커 타입
-    var type: PickerType = .ALL
-    /// 단일선택, 다중선택
-    var isOnePick = false
-}
-
-/// 피커 타입
-enum PickerType {
-    /// 전체
-    case ALL
-    /// 사진
-    case PHOTO
-    /// 비디오
-    case VIDEO
-}
-
-/// 선택 아이템
-struct SelectedPickerItem {
-    /// 고유 아이디 (Asset 의 고유 ID)
-    var id: String = ""
-    /// 선택 번째
-    var selectNum: Int = 0
-    /// 미디어 데이터
-    var asset: PHAsset = PHAsset()
-    /// 썸네일 이미지
-    var thumbImage: UIImage?
-}
-
 class AssetPickerViewController: BaseViewController {
     
     /// 생성자
@@ -236,9 +204,7 @@ extension AssetPickerViewController {
         /// 선택 아이템 바인딩
         self.assetVM.selectItem.bind { [weak self] (isRemove: Bool, item: SelectedPickerItem) in
             guard let self = self else { return }
-            
-            guard item.id != "" else { return }
-            
+            guard item.id != "" else { return }            
             isRemove ? self.selectListView.removePickerItem(item) : self.selectListView.addPickerItem(item)
         }
     }
