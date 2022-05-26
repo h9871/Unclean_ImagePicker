@@ -49,7 +49,7 @@ class AssetPickerAlbumListView: UIView {
     
     // MARK: - 핸들러
     // 반환데이터
-    var onSelect: ((PHAssetCollection) -> ())?
+    var onSelect: ((String, PHAssetCollection) -> ())?
 }
 
 // MARK: - ㄴ 뷰 셋팅
@@ -199,6 +199,6 @@ extension AssetPickerAlbumListView: UITableViewDelegate, UITableViewDataSource {
         
         let row = indexPath.row
         let album = self.albumList[row]
-        self.onSelect?(album.collection)
+        self.onSelect?(album.name, album.collection)
     }
 }

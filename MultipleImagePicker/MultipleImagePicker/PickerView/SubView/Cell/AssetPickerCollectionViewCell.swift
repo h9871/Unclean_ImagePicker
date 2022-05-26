@@ -10,6 +10,28 @@ import Photos
 
 class AssetPickerCollectionViewCell: UICollectionViewCell {
     
+    /// 카메라 뷰
+    private lazy var cameraView: UIView = {
+        let view = UIView()
+        view.layer.borderColor = UIColor.black.withAlphaComponent(0.12).cgColor
+        view.layer.borderWidth = 1
+        view.backgroundColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1.0)
+        
+        let centerImage = UIImageView()
+        centerImage.contentMode = .scaleAspectFit
+        centerImage.image = .remove
+        centerImage.center = view.center
+        view.addSubview(centerImage)
+        
+        centerImage.translatesAutoresizingMaskIntoConstraints = false
+        centerImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        centerImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        view.isHidden = true
+        
+        return view
+    }()
+    
     /// 이미지 뷰
     private lazy var thumbImageView: UIImageView = {
         let imageView = UIImageView()
@@ -28,12 +50,15 @@ class AssetPickerCollectionViewCell: UICollectionViewCell {
         view.layer.borderWidth = 2
         view.layer.cornerRadius = view.frame.height / 2
         view.layer.masksToBounds = true
+        view.isHidden = true
         return view
     }()
     
     /// 체크 박스
     private lazy var checkNumImageView: UIImageView = {
-        return UIImageView()
+        let imageView = UIImageView()
+        imageView.isHidden = true
+        return imageView
     }()
     
     /// 선택 라벨
@@ -43,6 +68,7 @@ class AssetPickerCollectionViewCell: UICollectionViewCell {
         label.textColor = .white
         label.textAlignment = .center
         label.backgroundColor = UIColor(red: 77/255, green: 124/255, blue: 254/255, alpha: 1.0)
+        label.isHidden = true
         return label
     }()
     
@@ -81,17 +107,29 @@ class AssetPickerCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        // 이미지 삭제
+        self.thumbImageView.isHidden = false
+        self.thumbImageView.image = nil
+        
+        // 초기 숨기기
+        self.cameraView.isHidden = true
+        self.selectView.isHidden = true
+        self.checkNumImageView.isHidden = true
+        self.selectCountLabel.isHidden = true
+    }
+    
     /// 뷰 셋팅
     private func initView() {
+        self.contentView.addSubview(self.cameraView)
         self.contentView.addSubview(self.thumbImageView)
         self.contentView.addSubview(self.selectView)
         self.contentView.addSubview(self.indicatorView)
         
         // 선택 뷰 내용
         self.selectView.addSubview(self.checkNumImageView)
-        self.checkNumImageView.isHidden = true
         self.selectView.addSubview(self.selectCountLabel)
-        self.selectCountLabel.isHidden = true
         
         // 레이아웃 설정
         self.updateLayoutView()
@@ -99,6 +137,11 @@ class AssetPickerCollectionViewCell: UICollectionViewCell {
     
     /// 뷰 레이아웃 설정
     private func updateLayoutView() {
+        // 카메라 뷰 레이아웃
+        self.cameraView.snp.remakeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
         // 썸네일 이미지 뷰 레이아웃
         self.thumbImageView.snp.remakeConstraints { make in
             make.edges.equalToSuperview()
@@ -128,12 +171,22 @@ class AssetPickerCollectionViewCell: UICollectionViewCell {
     }
     
     /// 셀 설정
-    func configureCell(_ asset: PHAsset, _ selectedList: Array<SelectedPickerItem>) {
-        // 미디어 파일 로드
-        self.loadThumbImage(asset)
+    func configureCell(_ model: AssetModel, _ selectedList: Array<SelectedPickerItem>) {
+        // 선택 뷰 노출
+        self.selectView.isHidden = model.isCamera
         
-        // 선택 이미지 설정
-        self.setSelectedImage(asset, selectedList)
+        if model.isCamera {
+            // 썸네일 뷰 숨김
+            self.thumbImageView.isHidden = true
+            // 카메라 뷰 표시
+            self.cameraView.isHidden = false
+        } else {
+            // 미디어 파일 로드
+            self.loadThumbImage(model.asset)
+            
+            // 선택 이미지 설정
+            self.setSelectedImage(model.asset, selectedList)
+        }
     }
 }
 

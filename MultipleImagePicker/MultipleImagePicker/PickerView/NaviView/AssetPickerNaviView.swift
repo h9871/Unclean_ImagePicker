@@ -10,7 +10,7 @@ import SnapKit
 
 protocol AssetPickerNaviViewDelegate {
     /// 뒤로가기 버튼 클릭 시
-    func didTappedBackBtn()
+    func didTappedBackBtn(animated: Bool, completion: (() -> Void)?)
     /// 앨범 리스트 버튼 클릭 시
     func didTappedAlbumListBtn(isSelect: Bool)
     /// 확인 버튼 클릭 시
@@ -45,7 +45,7 @@ class AssetPickerNaviView: UIView {
     /// 뒤로가기 버튼
     private lazy var backBtn: UIButton = {
         let button = UIButton(type: .custom, primaryAction: UIAction(handler: { action in
-            self.delegate?.didTappedBackBtn()
+            self.delegate?.didTappedBackBtn(animated: true, completion: nil)
         }))
         button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         return button
@@ -147,6 +147,15 @@ extension AssetPickerNaviView: SetBaseView {
     
     func initLoadView() {
         
+    }
+}
+
+// MARK: - ㄴ 타이틀 관련
+extension AssetPickerNaviView {
+    /// 네비게이션 타이틀 설정
+    /// - Parameter title: 타이틀
+    func setNaviTitle(_ title: String) {
+        self.albumListBtn.setTitle(title, for: .normal)
     }
 }
 

@@ -11,11 +11,18 @@ import Photos           // 미디어 파일 사용
 class AssetPickerViewController: BaseViewController {
     
     /// 생성자
+    /// - Parameters:
+    ///   - option: 피커 뷰 옵션
+    ///   - complete: 완료 시
+    ///   - useCamera: 카메라 사용 시
     /// - Returns: 피커 뷰 컨트롤러
-    class func instance(option: PickerConfiguration, complete: @escaping (Array<PHAsset>) -> Void) -> AssetPickerViewController {
+    class func instance(option: PickerConfiguration,
+                        complete: @escaping (Array<PHAsset>) -> Void,
+                        useCamera: (() -> Void)? = nil) -> AssetPickerViewController {
         let view = AssetPickerViewController()
         view.option = option
         view.confirmHandler = complete
+        view.useCameraHandler = useCamera
         return view
     }
     
@@ -58,9 +65,9 @@ class AssetPickerViewController: BaseViewController {
         case main
     }
     /// 데이터 소스
-    private var dataSource: UICollectionViewDiffableDataSource<Section, PHAsset>!
+    private var dataSource: UICollectionViewDiffableDataSource<Section, AssetModel>!
     /// 스냅샷
-    private var snapshot = NSDiffableDataSourceSnapshot<Section, PHAsset>()
+    private var snapshot = NSDiffableDataSourceSnapshot<Section, AssetModel>()
     
     // MARK: - 데이터
     /// 피커 타입
@@ -74,6 +81,8 @@ class AssetPickerViewController: BaseViewController {
     // MARK: - 핸들러
     /// 확인 핸들러
     private var confirmHandler: ((Array<PHAsset>) -> Void)?
+    /// 카메라 사용 핸들러
+    private var useCameraHandler: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -150,7 +159,7 @@ extension AssetPickerViewController {
         self.collectionView.register(AssetPickerCollectionViewCell.self, forCellWithReuseIdentifier: self.CELL_ID)
         self.collectionView.delegate = self
         
-        self.dataSource = UICollectionViewDiffableDataSource<Section, PHAsset>(collectionView: self.collectionView, cellProvider: { collectionView, indexPath, item in
+        self.dataSource = UICollectionViewDiffableDataSource<Section, AssetModel>(collectionView: self.collectionView, cellProvider: { collectionView, indexPath, item in
             guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: self.CELL_ID, for: indexPath) as? AssetPickerCollectionViewCell else {
                 return UICollectionViewCell()
             }
@@ -171,14 +180,15 @@ extension AssetPickerViewController {
         self.selectListView.isHidden = true
         
         // 1. 사진첩 리스트 조회
-        self.assetVM.fetchAssetList(type: self.option.type)        
+        self.assetVM.fetchAssetList(type: self.option.type, isCamera: self.option.isCamera)        
         
         // 2. 앨범 리스트 추출
-        self.albumListView.onSelect = { collection in
+        self.albumListView.onSelect = { title, collection in
+            self.naviView.setNaviTitle(title)
             self.naviView.updateAlbumListBtn(false)
             self.albumListView.setHideView()
             // 앨범 리스트 조회
-            self.assetVM.fetchAlbumAssetList(collection: collection)
+            self.assetVM.fetchAlbumAssetList(collection: collection, isCamera: self.option.isCamera)
         }
     }
     
@@ -213,8 +223,8 @@ extension AssetPickerViewController {
 // MARK: - ㄴ 네비게이션 관련
 extension AssetPickerViewController: AssetPickerNaviViewDelegate {
     /// 뒤로가기 버튼 클릭 시
-    func didTappedBackBtn() {
-        self.dismiss(animated: true, completion: nil)
+    func didTappedBackBtn(animated: Bool, completion: (() -> Void)?) {
+        self.dismiss(animated: animated, completion: completion)
     }
     
     /// 앨범 리스트 버튼 클릭 시
@@ -226,7 +236,7 @@ extension AssetPickerViewController: AssetPickerNaviViewDelegate {
     /// 확인 버튼 클릭 시
     func didTappedConfirmBtn() {
         self.confirmHandler?(self.assetVM.getSelectList())
-        self.didTappedBackBtn()
+        self.didTappedBackBtn(animated: true, completion: nil)
     }
 }
 
@@ -236,9 +246,10 @@ extension AssetPickerViewController {
     /// - Parameters:
     ///   - list: 리스트
     ///   - animated: 애니메이션
-    private func reloadCollectionView(_ list: Array<PHAsset>, animated: Bool = true) {
-        self.snapshot = NSDiffableDataSourceSnapshot<Section, PHAsset>()
+    private func reloadCollectionView(_ list: Array<AssetModel>, animated: Bool = true) {
+        self.snapshot = NSDiffableDataSourceSnapshot<Section, AssetModel>()
         self.snapshot.appendSections([.main])
+        
         self.snapshot.appendItems(list)
         self.snapshot.reloadItems(list)
         DispatchQueue.global(qos: .background).async {
@@ -300,8 +311,18 @@ extension AssetPickerViewController: UICollectionViewDelegate {
         guard let item = self.dataSource.itemIdentifier(for: indexPath) else {
             return
         }
-        // 선택 처리 진행
-        self.assetVM.selectedAsset(item: item)
+        
+        // 카메라 버튼 일시
+        if item.isCamera {
+            self.didTappedBackBtn(animated: true) {
+                self.useCameraHandler?()
+            }
+        }
+        // 미디어 파일 일시
+        else {
+            // 선택 처리 진행
+            self.assetVM.selectedAsset(item: item.asset)
+        }
     }
 }
 

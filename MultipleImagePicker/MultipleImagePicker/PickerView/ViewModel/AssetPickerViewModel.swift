@@ -16,6 +16,8 @@ struct PickerConfiguration {
     var type: PickerType = .ALL
     /// 단일선택, 다중선택
     var isOnePick = false
+    /// 카메라 사용
+    var isCamera = false
 }
 
 /// 피커 타입
@@ -26,6 +28,24 @@ enum PickerType {
     case PHOTO
     /// 비디오
     case VIDEO
+}
+
+/// 데이터 소스 모델
+struct AssetModel: Hashable {
+    /// id
+    var identifier = UUID()
+    /// 카메라인지
+    var isCamera = false
+    /// 이미지 파일
+    var asset = PHAsset()
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
+    }
+    
+    static func == (lhs: AssetModel, rhs: AssetModel) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
 }
 
 /// 선택 아이템
@@ -40,12 +60,15 @@ struct SelectedPickerItem {
     var thumbImage: UIImage?
 }
 
+/*
+ 피커 뷰 모델
+ */
 class AssetPickerViewModel {
     /// 썸네일 사이즈
     let THUMB_HEIGHT: CGFloat = 50
     
     /// 사진 리스트
-    let assetList: Observable<Array<PHAsset>> = Observable([])
+    let assetList: Observable<Array<AssetModel>> = Observable([])
     /// 선택 리스트
     let selectList: Observable<Array<SelectedPickerItem>> = Observable([])
     /// 선택 아이템
@@ -80,7 +103,7 @@ extension AssetPickerViewModel {
     
     /// 미디어 리스트 추출
     /// - Parameter type: 타입
-    func fetchAssetList(type: PickerType) {
+    func fetchAssetList(type: PickerType, isCamera: Bool = false) {
         var fetchAssets = PHFetchResult<PHAsset>()
         switch type {
         case .ALL: fetchAssets = PHAsset.fetchAssets(with: self.getFetchOption())
@@ -89,9 +112,17 @@ extension AssetPickerViewModel {
         }
         
         // 데이터 설정
-        var formatList: Array<PHAsset> = []
+        var formatList: Array<AssetModel> = []
+        
+        // 카메라 플래그 ON
+        if isCamera {
+            let cameraModel = AssetModel(isCamera: true)
+            formatList.append(cameraModel)
+        }
+        
+        // 미디어 파일
         fetchAssets.enumerateObjects { asset, count, stop in
-            formatList.append(asset)
+            formatList.append(AssetModel(asset: asset))
         }
         
         // 아이템 설정
@@ -100,13 +131,20 @@ extension AssetPickerViewModel {
     
     /// 앨범 리스트 선택
     /// - Parameter collection: 선택된 컬렉션
-    func fetchAlbumAssetList(collection: PHAssetCollection) {
+    func fetchAlbumAssetList(collection: PHAssetCollection, isCamera: Bool = false) {
         let fetchAssets = PHAsset.fetchAssets(in: collection, options: self.getFetchOption())
         
         // 데이터 설정
-        var formatList: Array<PHAsset> = []
+        var formatList: Array<AssetModel> = []
+        
+        // 카메라 플래그 ON
+        if isCamera {
+            let cameraModel = AssetModel(isCamera: true)
+            formatList.append(cameraModel)
+        }
+        
         fetchAssets.enumerateObjects { asset, count, stop in
-            formatList.append(asset)
+            formatList.append(AssetModel(asset: asset))
         }
         
         // 아이템 설정

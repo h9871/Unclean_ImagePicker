@@ -6,6 +6,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>앨범 접근 권한이 필요합니다</string>
+	<key>NSCameraUsageDescription</key>
+	<string>카메라 접근 권한이 필요합니다</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -15,8 +15,6 @@ class AssetSelectedThumbView: UIView {
     /// 썸네일 이미지 뷰
     private lazy var thumbImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.borderWidth = 0.5
-        imageView.layer.borderColor = UIColor.blue.cgColor
         imageView.layer.cornerRadius = 6
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
