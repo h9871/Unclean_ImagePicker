@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5D18B17927F2F3F80005B6EE /* AssetPickerAlbumListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18B17827F2F3F80005B6EE /* AssetPickerAlbumListView.swift */; };
 		5D18B17C27F2F74A0005B6EE /* Photos+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18B17B27F2F74A0005B6EE /* Photos+Extensions.swift */; };
 		5D27E3A927E1BC8100DE2ABA /* AssetSelectedThumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */; };
 		5D32458F2807FAF500D52A6C /* ObservavleClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D32458E2807FAF500D52A6C /* ObservavleClass.swift */; };
@@ -31,7 +30,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5D18B17827F2F3F80005B6EE /* AssetPickerAlbumListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerAlbumListView.swift; sourceTree = "<group>"; };
 		5D18B17B27F2F74A0005B6EE /* Photos+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photos+Extensions.swift"; sourceTree = "<group>"; };
 		5D27E3A827E1BC8100DE2ABA /* AssetSelectedThumbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelectedThumbView.swift; sourceTree = "<group>"; };
 		5D32458E2807FAF500D52A6C /* ObservavleClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservavleClass.swift; sourceTree = "<group>"; };
@@ -187,7 +185,6 @@
 			isa = PBXGroup;
 			children = (
 				5DFEA2CB27FAEC0C00DD17EA /* Cell */,
-				5D18B17827F2F3F80005B6EE /* AssetPickerAlbumListView.swift */,
 			);
 			name = "AlbumList(앨범 리스트)";
 			path = "AlbumList(앨범 리스트)";
@@ -289,7 +286,6 @@
 			files = (
 				5D40343327FE64AB002B3D21 /* UIApplication+Extensions.swift in Sources */,
 				5D874A4A27DB17010026ABB2 /* ViewController.swift in Sources */,
-				5D18B17927F2F3F80005B6EE /* AssetPickerAlbumListView.swift in Sources */,
 				5D874A4627DB17010026ABB2 /* AppDelegate.swift in Sources */,
 				5D27E3A927E1BC8100DE2ABA /* AssetSelectedThumbView.swift in Sources */,
 				5D32458F2807FAF500D52A6C /* ObservavleClass.swift in Sources */,
