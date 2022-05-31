@@ -188,7 +188,7 @@ extension AssetPickerViewController {
             self.naviView.updateAlbumListBtn(false)
             self.albumListView.setHideView()
             // 앨범 리스트 조회
-            self.assetVM.fetchAlbumAssetList(collection: collection, isCamera: self.option.isCamera)
+            self.assetVM.fetchAlbumAssetList(collection: collection, type: self.option.type, isCamera: self.option.isCamera)
         }
     }
     
@@ -317,6 +317,11 @@ extension AssetPickerViewController: UICollectionViewDelegate {
             self.didTappedBackBtn(animated: true) {
                 self.useCameraHandler?()
             }
+        }
+        // 하나만 선택할 시
+        if self.option.isOnePick {
+            self.confirmHandler?([item.asset])
+            self.didTappedBackBtn(animated: true, completion: nil)
         }
         // 미디어 파일 일시
         else {

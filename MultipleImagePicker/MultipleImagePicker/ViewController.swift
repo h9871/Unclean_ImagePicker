@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     /// 시작 버튼 클릭 시
     /// - Parameter sender: 시작 버튼
     @IBAction func didTappedStartBtn(_ sender: UIButton) {
-        let option = PickerConfiguration(type: .ALL, isOnePick: false, isCamera: true)
+        let option = PickerConfiguration(type: .ALL, isOnePick: true, isCamera: true)
         let vc = AssetPickerViewController.instance(option: option) { list in
             print(list)
         } useCamera: {

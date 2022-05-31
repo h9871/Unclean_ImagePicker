@@ -92,11 +92,31 @@ extension AssetPickerViewModel {
 extension AssetPickerViewModel {
     /// 미디어 Fetch 옵션
     /// - Returns: 옵션
-    private func getFetchOption() -> PHFetchOptions {
+    private func getFetchOption(type: PickerType) -> PHFetchOptions {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
             NSSortDescriptor(key: "creationDate", ascending: false)
         ]
+        
+        // 조회 조건 작성
+        var queryArray: [NSPredicate] = []
+        
+        switch type {
+        case .ALL:
+            queryArray.append(NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue))
+            queryArray.append(NSPredicate(format: "mediaType = %d", PHAssetMediaType.video.rawValue))
+        case .PHOTO:
+            queryArray.append(NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue))
+        case .VIDEO:
+            queryArray.append(NSPredicate(format: "mediaType = %d", PHAssetMediaType.video.rawValue))
+        }
+        
+        // 쿼리 배열이 없으면 찾을 필요도 없다
+        if queryArray.count < 1 { return fetchOptions }
+        
+        // 쿼리 배열에 맞추어 완전체 쿼리 만들기 (또는 으로 설정해야 여러개를 조사한다)
+        let query = NSCompoundPredicate(type: .or, subpredicates: queryArray)
+        fetchOptions.predicate = query
         
         return fetchOptions
     }
@@ -104,12 +124,7 @@ extension AssetPickerViewModel {
     /// 미디어 리스트 추출
     /// - Parameter type: 타입
     func fetchAssetList(type: PickerType, isCamera: Bool = false) {
-        var fetchAssets = PHFetchResult<PHAsset>()
-        switch type {
-        case .ALL: fetchAssets = PHAsset.fetchAssets(with: self.getFetchOption())
-        case .PHOTO: fetchAssets = PHAsset.fetchAssets(with: .image, options: self.getFetchOption())
-        case .VIDEO: fetchAssets = PHAsset.fetchAssets(with: .video, options: self.getFetchOption())
-        }
+        let fetchAssets = PHAsset.fetchAssets(with: self.getFetchOption(type: type))
         
         // 데이터 설정
         var formatList: Array<AssetModel> = []
@@ -131,8 +146,8 @@ extension AssetPickerViewModel {
     
     /// 앨범 리스트 선택
     /// - Parameter collection: 선택된 컬렉션
-    func fetchAlbumAssetList(collection: PHAssetCollection, isCamera: Bool = false) {
-        let fetchAssets = PHAsset.fetchAssets(in: collection, options: self.getFetchOption())
+    func fetchAlbumAssetList(collection: PHAssetCollection, type: PickerType, isCamera: Bool = false) {
+        let fetchAssets = PHAsset.fetchAssets(in: collection, options: self.getFetchOption(type: type))
         
         // 데이터 설정
         var formatList: Array<AssetModel> = []

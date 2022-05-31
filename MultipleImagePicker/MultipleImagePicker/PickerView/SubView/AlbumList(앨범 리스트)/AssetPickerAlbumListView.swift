@@ -14,12 +14,15 @@ struct AlbumList {
     var name: String = ""
     /// 갯수
     var count: Int = 0
+    /// 썸네일 오브젝트
+    var thumbAsset: PHAsset? = nil
     /// 컬렉션
     var collection: PHAssetCollection
     
-    init(name: String, count: Int, collection: PHAssetCollection) {
+    init(name: String, count: Int, thumbAsset: PHAsset?, collection: PHAssetCollection) {
         self.name = name
         self.count = count
+        self.thumbAsset = thumbAsset
         self.collection = collection
     }
 }
@@ -117,36 +120,14 @@ extension AssetPickerAlbumListView {
     public func requestLoadAlbumList(mediaType: Array<PHAssetMediaType>) {
         self.albumList.removeAll()
         
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [
-            NSSortDescriptor(key: "creationDate", ascending: false)
-        ]
-        // 조회 조건 작성
-        var queryArray: [NSPredicate] = []
-        
-        // 선택 캘린더를 반복하여 쿼리문 만들기
-        for type in mediaType {
-            // 각 아이템의 쿼리
-            let predicate = NSPredicate(format: "mediaType = %d", type.rawValue)
-            // 쿼리 배열에 넣기
-            queryArray.append(predicate)
-        }
-        
-        // 쿼리 배열이 없으면 찾을 필요도 없다
-        if queryArray.count < 1 { return }
-        
-        // 쿼리 배열에 맞추어 완전체 쿼리 만들기 (또는 으로 설정해야 여러개를 조사한다)
-        let query = NSCompoundPredicate(type: .or, subpredicates: queryArray)
-        fetchOptions.predicate = query
-        
         // 조회 후 배열에 넣어주기
-        self.getAlbumList(albumType: .smartAlbum, fetchOptions: PHFetchOptions()) { list in
+        self.getAlbumList(albumType: .smartAlbum, mediaType: mediaType) { list in
             self.albumList.append(list)
             self.tableView.reloadData()
         }
         
         // 조회 후 배열에 넣어주기
-        self.getAlbumList(albumType: .album, fetchOptions: PHFetchOptions()) { list in
+        self.getAlbumList(albumType: .album, mediaType: mediaType) { list in
             self.albumList.append(list)
             self.tableView.reloadData()
         }
@@ -157,15 +138,17 @@ extension AssetPickerAlbumListView {
     ///   - albumType: 앨범 타입
     ///   - fetchOptions: 조회 옵션
     ///   - completion: 완료 리스트
-    private func getAlbumList(albumType: PHAssetCollectionType, fetchOptions: PHFetchOptions,
+    private func getAlbumList(albumType: PHAssetCollectionType, mediaType: Array<PHAssetMediaType>,
                               completion: @escaping (AlbumList) -> Void) {
-        let collectionAlbum = PHAssetCollection.fetchAssetCollections(with: albumType, subtype: .any, options: fetchOptions)
+        let collectionAlbum = PHAssetCollection.fetchAssetCollections(with: albumType, subtype: .any, options: PHFetchOptions())
         
         collectionAlbum.enumerateObjects{ (object: Any, count: Int, stop: UnsafeMutablePointer) in
             if object is PHAssetCollection,
                let collectionObject = object as? PHAssetCollection {
+                let albumInfo = collectionObject.getAlbumInfo(mediaType: mediaType)
                 let newAlbum = AlbumList(name: collectionObject.localizedTitle ?? "",
-                                         count: collectionObject.photosCount,
+                                         count: albumInfo.count,
+                                         thumbAsset: albumInfo.firstObject,
                                          collection: collectionObject)
                 // 갯수가 있는 것만 배열 넣기
                 if newAlbum.count > 0 {

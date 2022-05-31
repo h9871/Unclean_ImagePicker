@@ -98,14 +98,14 @@ class AssetPickerAlbumTableViewCell: UITableViewCell {
             self.albumMediaCountLabel.text = "\(album.count)"
         }
         
-        let asset = PHAsset.fetchAssets(in: album.collection, options: nil)
-        let firstImage = asset.object(at: 0)
-        let thumbSize = CGSize(width: UIScreen.main.scale * self.THUMB_IMAGE_SIZE, height: UIScreen.main.scale * self.THUMB_IMAGE_SIZE)
-        
-        Utils.getImage(asset: firstImage, targetSize: thumbSize) { progress in
+        if let thumbAsset = album.thumbAsset {
+            let thumbSize = CGSize(width: UIScreen.main.scale * self.THUMB_IMAGE_SIZE, height: UIScreen.main.scale * self.THUMB_IMAGE_SIZE)
             
-        } completion: { image in
-            self.thumbImageView.image = image
+            Utils.getImage(asset: thumbAsset, targetSize: thumbSize) { progress in
+                
+            } completion: { image in
+                self.thumbImageView.image = image
+            }
         }
     }
 }
